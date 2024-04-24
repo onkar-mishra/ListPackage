@@ -13,14 +13,16 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 public struct ListView: View {
-    @State private var emails: [String] = []
+    @State private var emails: [String] = ["nsaljncnla","fcsncwnclowncl","csnclnwqncnkjlc","cnalksndcnsjkncj"]
     
-    public init() {}
+    public init(email: [String]) {
+        emails = email
+    }
     
     public var body: some View {
         VStack {
             List(emails, id: \.self) { email in
-                Text("Helooo")
+                Text(email).foregroundColor(.orange)
             }
         }
     }
