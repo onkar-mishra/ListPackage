@@ -9,7 +9,9 @@ import Foundation
 import SwiftUI
 import Alamofire
 
-public struct DemoView: View {
+//MARK: VIEW
+
+public struct ListView: View {
     @State private var emails: [String] = []
 
     public init() {}
@@ -30,7 +32,10 @@ public struct DemoView: View {
         }
     }
 
-    func fetchData(completion: @escaping (Result<[String], Error>) -> Void) {
+    
+//    MARK: PRIVATE FUNCTION
+    
+   private  func fetchData(completion: @escaping (Result<[String], Error>) -> Void) {
         let url = "https://reqres.in/api/users?page=1"
         
         AF.request(url).responseJSON { response in
