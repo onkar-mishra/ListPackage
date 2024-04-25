@@ -14,6 +14,10 @@ public struct ListView: View {
 
     public var didSelectEmailAction: ((String) -> Void)? // Closure to handle email selection
 
+    public init(didSelectEmailAction: ((String) -> Void)?) {
+        self.didSelectEmailAction = didSelectEmailAction
+    }
+
     public var body: some View {
         VStack {
             List(emails, id: \.self) { email in
