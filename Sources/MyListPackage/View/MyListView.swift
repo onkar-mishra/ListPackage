@@ -4,7 +4,6 @@
 //
 //  Created by Onkar Mishra on 24/04/24.
 //
-
 import SwiftUI
 import Alamofire
 
@@ -12,51 +11,41 @@ import Alamofire
 public struct ListView: View {
     @State private var emails: [String] = []
     @State private var selectedEmail: String?
-    @State private var isLoading: Bool = false // State variable to track loading status
-    
-    public init() {}
-    
+
+    public var didSelectEmailAction: ((String) -> Void)? // Closure to handle email selection
+
     public var body: some View {
         VStack {
             List(emails, id: \.self) { email in
                 Text(email).foregroundColor(.orange)
             }
             
+            Spacer()
+            
             Button(action: {
-                fetchData()
-            }) {
-                Text("Load Data")
-            }
-            .disabled(isLoading) // Disable the button while loading
-            
-            if isLoading {
-                HStack {
-                    Spacer()
-                    Text("Loading...")
-                    Spacer()
+                if let email = selectedEmail {
+                    didSelectEmailAction?(email) // Call the closure to handle email selection
                 }
-            }
-            
-            if let selectedEmail = selectedEmail {
-                Text("Selected Email: \(selectedEmail)")
+            }) {
+                Text("Return to App")
+                    .padding()
             }
         }
+        .padding()
         .onAppear {
             fetchData()
         }
     }
-    
+
     private func fetchData() {
-        isLoading = true // Start loading
         AF.request("https://reqres.in/api/users?page=1").responseDecodable(of: UsersResponse.self) { response in
             switch response.result {
             case .success(let usersResponse):
                 self.emails = usersResponse.data.compactMap { $0.email }
-                self.selectedEmail = usersResponse.data.first?.email
+                self.selectedEmail = self.emails.first // Set the selectedEmail to the first email
             case .failure(let error):
                 print("Error fetching data: \(error)")
             }
-            isLoading = false // Stop loading
         }
     }
 }
